@@ -1,0 +1,73 @@
+<?php
+
+namespace Survos\CiineBundle;
+
+use Survos\CiineBundle\Command\ScreenshotCommand;
+use Survos\CiineBundle\Command\SurvosBuildDocsCommand;
+use Survos\CiineBundle\Command\UploadCommand;
+use Survos\CiineBundle\Controller\ScreenshotController;
+use Survos\CiineBundle\EventSubscriber\LoggerSubscriber;
+use Survos\CiineBundle\Twig\TwigExtension;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
+class SurvosCiineBundle extends AbstractBundle
+{
+    protected string $extensionAlias = 'survos_doc';
+
+    /**
+     * @param array<mixed> $config
+     */
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $builder->autowire(ScreenshotController::class)
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->addTag('controller.service_arguments')
+            ->addTag('controller.service_subscriber');
+
+        $definition = $builder
+            ->autowire('survos.doc_twig', TwigExtension::class)
+            ->addTag('twig.extension')
+            ->setArgument('$config', $config)
+        ;
+
+        //        $definition->setArgument('$seed', $config['seed']);
+        //        $definition->setArgument('$prefix', $config['function_prefix']);
+
+        $builder->autowire(SurvosBuildDocsCommand::class)
+            ->setArgument('$config', $config)
+            ->setArgument('$twig', new Reference('twig'))
+            ->addTag('console.command')
+        ;
+
+        $builder->autowire(ScreenshotCommand::class)
+            ->addTag('console.command');
+
+        $builder->autowire(UploadCommand::class)
+            ->setArgument('$httpClient', new Reference('http_client'))
+            ->setArgument('$projectDir', '%kernel.project_dir%')
+            ->setArgument('$config', $config)
+//            ->setArgument('$config', $config)
+            ->addTag('console.command')
+        ;
+    }
+
+    public function configure(DefinitionConfigurator $definition): void
+    {
+        // since the configuration is short, we can add it here
+        $definition->rootNode()
+            ->children()
+//            ->scalarNode('screenshow_endpoint')->defaultValue(null)->end()
+            ->scalarNode('screenshow_endpoint')->defaultValue('%env(default::SCREENSHOW_ENDPOINT)%')->end()
+            ->scalarNode('user_provider')->defaultValue(null)->end()
+            ->scalarNode('user_class')->defaultValue("App\\Entity\\User")->end()
+            ->end();
+        ;
+    }
+}
