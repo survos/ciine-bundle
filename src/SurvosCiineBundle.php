@@ -3,21 +3,18 @@
 namespace Survos\CiineBundle;
 
 use Survos\CiineBundle\Command\ScreenshotCommand;
-use Survos\CiineBundle\Command\SurvosBuildDocsCommand;
 use Survos\CiineBundle\Command\UploadCommand;
 use Survos\CiineBundle\Controller\ScreenshotController;
-use Survos\CiineBundle\EventSubscriber\LoggerSubscriber;
 use Survos\CiineBundle\Twig\TwigExtension;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SurvosCiineBundle extends AbstractBundle
 {
-    protected string $extensionAlias = 'survos_doc';
+    protected string $extensionAlias = 'survos_ciine';
 
     /**
      * @param array<mixed> $config
@@ -31,20 +28,15 @@ class SurvosCiineBundle extends AbstractBundle
             ->addTag('controller.service_arguments')
             ->addTag('controller.service_subscriber');
 
+        // eh?  Do we need this?
         $definition = $builder
-            ->autowire('survos.doc_twig', TwigExtension::class)
+            ->autowire('survos.ciine_twig', TwigExtension::class)
             ->addTag('twig.extension')
             ->setArgument('$config', $config)
         ;
 
         //        $definition->setArgument('$seed', $config['seed']);
         //        $definition->setArgument('$prefix', $config['function_prefix']);
-
-        $builder->autowire(SurvosBuildDocsCommand::class)
-            ->setArgument('$config', $config)
-            ->setArgument('$twig', new Reference('twig'))
-            ->addTag('console.command')
-        ;
 
         $builder->autowire(ScreenshotCommand::class)
             ->addTag('console.command');
@@ -64,9 +56,8 @@ class SurvosCiineBundle extends AbstractBundle
         $definition->rootNode()
             ->children()
 //            ->scalarNode('screenshow_endpoint')->defaultValue(null)->end()
-            ->scalarNode('screenshow_endpoint')->defaultValue('%env(default::SCREENSHOW_ENDPOINT)%')->end()
-            ->scalarNode('user_provider')->defaultValue(null)->end()
-            ->scalarNode('user_class')->defaultValue("App\\Entity\\User")->end()
+            ->scalarNode('endpoint')->defaultValue('%env(default::CIINE_ENDPOINT)%')->end()
+            ->scalarNode('dir')->defaultValue('%env(default::CIINE_LOCAL_DIR)%')->end()
             ->end();
         ;
     }

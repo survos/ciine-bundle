@@ -10,7 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[AsCommand('doc:upload', 'upload a Asciinema file or directory to shellshow site', aliases: ['upload'])]
+#[AsCommand('ciine:upload', 'upload a Asciinema file or directory to shellshow site', aliases: ['upload'])]
 class UploadCommand
 {
     public function __construct(
