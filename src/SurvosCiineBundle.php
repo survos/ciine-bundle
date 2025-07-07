@@ -2,6 +2,7 @@
 
 namespace Survos\CiineBundle;
 
+use Survos\CiineBundle\Command\PlayCommand;
 use Survos\CiineBundle\Command\ScreenshotCommand;
 use Survos\CiineBundle\Command\UploadCommand;
 use Survos\CiineBundle\Controller\ScreenshotController;
@@ -48,6 +49,15 @@ class SurvosCiineBundle extends AbstractBundle
 //            ->setArgument('$config', $config)
             ->addTag('console.command')
         ;
+
+        $builder->autowire(PlayCommand::class)
+            ->setArgument('$httpClient', new Reference('http_client'))
+            ->setArgument('$projectDir', '%kernel.project_dir%')
+            ->setArgument('$config', $config)
+//            ->setArgument('$config', $config)
+            ->addTag('console.command')
+        ;
+
     }
 
     public function configure(DefinitionConfigurator $definition): void

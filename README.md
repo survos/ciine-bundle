@@ -6,6 +6,10 @@ Symfony Bundle that provides some utilities for using asciinema 3.0 to create as
 
 # Install the bundle
 
+```bash
+wget "https://github.com/asciinema/asciinema/releases/download/v3.0.0-rc.5/asciinema-x86_64-unknown-linux-gnu" asciinema
+```
+
 # Configure .bashrc
 
 The easiest way to use this bundle is to pre-configure a few commands.  You can also run everything manually, but it's a bit of a pain to track the files.

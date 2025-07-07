@@ -3,13 +3,10 @@
 namespace Survos\CiineBundle\Controller;
 
 use ApiPlatform\Metadata\UrlGeneratorInterface;
-use App\Dto\Player;
-use App\Dto\PlayerEvent;
-use App\Entity\Show;
-use App\Repository\ShowRepository;
-use App\Workflow\IPlayerWorkflow;
+use Survos\CiineBundle\Dto\Player;
+use Survos\CiineBundle\Dto\PlayerEvent;
+use Survos\CiineBundle\Workflow\IPlayerWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
-use Liip\ImagineBundle\Message\WarmupCache;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
