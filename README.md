@@ -14,6 +14,11 @@ wget "https://github.com/asciinema/asciinema/releases/download/v3.0.0-rc.5/ascii
 
 The easiest way to use this bundle is to pre-configure a few commands.  You can also run everything manually, but it's a bit of a pain to track the files.
 
+```bashrc
+rec() { asciinema rec "casts/${PWD##*/}/$(date +%s).cast" --title="$1"; }
+```
+
+
 # Usage
 
 Start the recorder.  
