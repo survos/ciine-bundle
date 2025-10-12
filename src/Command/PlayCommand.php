@@ -59,6 +59,7 @@ class PlayCommand extends Command
         #[Option(name: 'server-url', description: 'api endpoint')] string $apiEndpoint = '',
     ): int
     {
+        $command = 'ciine'; // 'asciinema';
         if (!$filenameTemplate = getenv("CIINE_PATH")) {
             assert(false, "missing CIINE_PATH");
         }
@@ -69,7 +70,7 @@ class PlayCommand extends Command
         $mostRecent =  $this->getMostRecentFile($castDir);
         // first, get the title from the json
 
-        $process = new Process(['asciinema', 'play', $mostRecent, '-s', '2.0', '-i', 0.5]);
+        $process = new Process([$command, 'play', $mostRecent, '-s', '2.0', '-i', 0.5]);
         $process->run();
 
 // executes after the command finishes

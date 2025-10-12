@@ -2,10 +2,14 @@
 
 namespace Survos\CiineBundle\Workflow;
 
-use Survos\WorkflowBundle\Attribute\Place;
-use Survos\WorkflowBundle\Attribute\Transition;
+use Survos\CiineBundle\Dto\Player;
+use Survos\StateBundle\Attribute\Place;
+use Survos\StateBundle\Attribute\Transition;
+use Survos\StateBundle\Attribute\Workflow;
 
-interface IPlayerWorkflow
+#[Workflow(supports: [Player::class], name: self::WORKFLOW_NAME)]
+
+class IPlayerWorkflow
 {
 	public const WORKFLOW_NAME = 'PlayerWorkflow';
 
