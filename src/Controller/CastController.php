@@ -2,7 +2,6 @@
 
 namespace Survos\CiineBundle\Controller;
 
-use ApiPlatform\Metadata\UrlGeneratorInterface;
 use Survos\CiineBundle\Dto\Player;
 use Survos\CiineBundle\Dto\PlayerEvent;
 use Survos\CiineBundle\Workflow\IPlayerWorkflow;
@@ -37,7 +36,6 @@ final class CastController extends AbstractController
         private LoggerInterface                            $logger,
         private TexterInterface                            $texter,
         private readonly EntityManagerInterface            $entityManager,
-        private readonly ShowRepository                    $showRepository,
         private float                                      $totalTime = 0.0,
         // crying to be a DTO
         private array                                      $response = [
@@ -51,71 +49,71 @@ final class CastController extends AbstractController
 
     }
 
-    #[Route('/api/asciicasts', name: 'cast_upload')]
-    public function upload(Request        $request,
-                           ShowRepository $showRepository,
-                           string         $cineCode = 'test'): Response
-    {
-        $fileBag = $request->files;
-//        return $this->json([]);
+//    #[Route('/api/asciicasts', name: 'cast_upload')]
+//    public function upload(Request        $request,
+//                           ShowRepository $showRepository,
+//                           string         $cineCode = 'test'): Response
+//    {
+//        $fileBag = $request->files;
+////        return $this->json([]);
+//
+//        /** @var UploadedFile $uploadedFile */
+//        $uploadedFile = $fileBag->all()['asciicast'];
+//////        dump($fileBag->all('asciicast'));
+//        if ($uploadedFile) {
+//            file_put_contents($fn = $uploadedFile->getClientOriginalName(), $uploadedFile->getContent());
+//
+//            $code = basename($uploadedFile->getClientOriginalName(), '.cast');
+//            $message = new DesktopMessage(
+//                'New upload! 🎉 ' . $uploadedFile->getClientOriginalName(),
+//                json_encode(['code' => $code])
+//            );
+//            try {
+//                if ($this->environment === 'dev') {
+//                    $this->texter->send($message);
+//                }
+//            } catch (\Exception $e) {
+//                // hmm
+//            }
+//
+//            if (!$show = $showRepository->findOneBy(['code' => $code])) {
+//                $show = new Show($code);
+//                $this->entityManager->persist($show);
+//            }
+//            $content = $uploadedFile->getContent();
+//
+//            $show
+//                ->setAsciiCast($content);
+//
+//            $header = $show->getHeader();
+//            $show->setTitle($header['title'] ?? null);
+//
+//            $lines = $show->getLines();
+//            $show
+//                ->setFileSize($uploadedFile->getFileInfo()->getSize())
+//                ->setLineCount(count($lines))
+//                ->setMarkerCount(0)
+//                ->setTotalTime(-1);
+//
+//            $this->entityManager->flush();
+//
+////            file_put_contents($fn = $this->projectDir . '/public/' . $uploadedFile->getClientOriginalName(),
+////                $uploadedFile->getContent());
+////            $this->logger->info($fn);
+//        } else {
+//        }
+//
+//
+//
+//        return new JsonResponse(json_encode([
+//            'status' => 'okay',
+//            'orig' => $uploadedFile->getClientOriginalName(),
+//            'show' => $show->getCode(),
+//            'url' => $this->generateUrl('app_player', ['cineCode' => $show->getCode()], UrlGeneratorInterface::ABS_URL),
+//        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT), json: true);
+//    }
 
-        /** @var UploadedFile $uploadedFile */
-        $uploadedFile = $fileBag->all()['asciicast'];
-////        dump($fileBag->all('asciicast'));
-        if ($uploadedFile) {
-            file_put_contents($fn = $uploadedFile->getClientOriginalName(), $uploadedFile->getContent());
-
-            $code = basename($uploadedFile->getClientOriginalName(), '.cast');
-            $message = new DesktopMessage(
-                'New upload! 🎉 ' . $uploadedFile->getClientOriginalName(),
-                json_encode(['code' => $code])
-            );
-            try {
-                if ($this->environment === 'dev') {
-                    $this->texter->send($message);
-                }
-            } catch (\Exception $e) {
-                // hmm
-            }
-
-            if (!$show = $showRepository->findOneBy(['code' => $code])) {
-                $show = new Show($code);
-                $this->entityManager->persist($show);
-            }
-            $content = $uploadedFile->getContent();
-
-            $show
-                ->setAsciiCast($content);
-
-            $header = $show->getHeader();
-            $show->setTitle($header['title'] ?? null);
-
-            $lines = $show->getLines();
-            $show
-                ->setFileSize($uploadedFile->getFileInfo()->getSize())
-                ->setLineCount(count($lines))
-                ->setMarkerCount(0)
-                ->setTotalTime(-1);
-
-            $this->entityManager->flush();
-
-//            file_put_contents($fn = $this->projectDir . '/public/' . $uploadedFile->getClientOriginalName(),
-//                $uploadedFile->getContent());
-//            $this->logger->info($fn);
-        } else {
-        }
-
-
-
-        return new JsonResponse(json_encode([
-            'status' => 'okay',
-            'orig' => $uploadedFile->getClientOriginalName(),
-            'show' => $show->getCode(),
-            'url' => $this->generateUrl('app_player', ['cineCode' => $show->getCode()], UrlGeneratorInterface::ABS_URL),
-        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT), json: true);
-    }
-
-    #[Route('/player/{cineCode}.{_format}', name: 'app_player')]
+    #[Route('/player/{cineCode}.{_format}', name: 'bundle_player')]
     #[Template('cine.html.twig')]
     public function cinePlayer(string $cineCode, string $_format='html'): Response|array
     {
@@ -181,14 +179,14 @@ final class CastController extends AbstractController
 
     private function getAsciiCast($cineCode): string
     {
-        if ($show = $this->showRepository->findOneBy(['code' => $cineCode])) {
-            $asciiCast = $show->getAsciiCast();
-        } else {
+//        if ($show = $this->showRepository->findOneBy(['code' => $cineCode])) {
+//            $asciiCast = $show->getAsciiCast();
+//        } else {
             // debug only
             $filename = $cineCode . '.cast';
             $asciiCast = file_get_contents($this->projectDir . '/casts/' . $filename);
-        }
-        assert($show, "Missing $cineCode in database");
+//        }
+//        assert($show, "Missing $cineCode in database");
         return $asciiCast;
 
     }

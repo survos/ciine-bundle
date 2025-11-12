@@ -24,7 +24,7 @@ class CiineService
     {
     }
 
-    private function cleanup(string $cast, string $cineCode): array
+    final public function cleanup(string $cast, string $cineCode): array
     {
         // of interest: https://blog.mbedded.ninja/programming/ansi-escape-sequences/
 
