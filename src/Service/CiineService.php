@@ -11,8 +11,7 @@ use Symfony\Component\Workflow\WorkflowInterface;
 class CiineService
 {
     public function __construct(
-        #[Target(IPlayerWorkflow::WORKFLOW_NAME)]
-        private WorkflowInterface $workflow,
+        #[Target(IPlayerWorkflow::WORKFLOW_NAME)] private ?WorkflowInterface $workflow=null,
         private float             $totalTime = 0.0,
         // crying to be a DTO
         private array             $response = [

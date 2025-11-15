@@ -31,11 +31,11 @@ final class CastController extends AbstractController
     public function __construct(
         #[Autowire('%kernel.project_dir%')] private string $projectDir,
         #[Autowire('%kernel.environment')] private string  $environment,
-        #[Target(IPlayerWorkflow::WORKFLOW_NAME)] private WorkflowInterface $workflow,
         private MessageBusInterface                        $messageBus,
         private LoggerInterface                            $logger,
-        private TexterInterface                            $texter,
         private readonly EntityManagerInterface            $entityManager,
+        private ?TexterInterface                            $texter=null,
+        #[Target(IPlayerWorkflow::WORKFLOW_NAME)] private ?WorkflowInterface $workflow=null,
         private float                                      $totalTime = 0.0,
         // crying to be a DTO
         private array                                      $response = [

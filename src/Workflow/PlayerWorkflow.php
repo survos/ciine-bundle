@@ -11,7 +11,7 @@ use Symfony\Component\Workflow\Event\TransitionEvent;
 use Survos\CiineBundle\Workflow\IPlayerWorkflow as WF;
 class PlayerWorkflow
 {
-	public const WORKFLOW_NAME = 'PlayerWorkflow';
+//	public const WORKFLOW_NAME = 'PlayerWorkflow';
 
 	public function __construct()
 	{
