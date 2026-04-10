@@ -25,7 +25,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^2.0",
-        "phpunit/phpunit": "^12",
+        "phpunit/phpunit": "^13",
         "symfony/framework-bundle": "^7.4||^8.0",
         "symfony/routing": "^7.4||^8.0",
         "survos/state-bundle": "^2.0",

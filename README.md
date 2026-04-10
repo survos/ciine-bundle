@@ -7,7 +7,7 @@ Symfony Bundle that provides some utilities for using asciinema 3.0 to create as
 # Install the bundle
 
 ```bash
-wget "https://github.com/asciinema/asciinema/releases/download/v3.0.0-rc.5/asciinema-x86_64-unknown-linux-gnu" asciinema
+wget "https://github.com/asciinema/asciinema/releases/download/v3.2.0/asciinema-x86_64-unknown-linux-gnu" asciinema
 ```
 
 # Configure .bashrc
