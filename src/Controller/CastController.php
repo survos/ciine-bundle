@@ -31,18 +31,17 @@ final class CastController extends AbstractController
     public function __construct(
         #[Autowire('%kernel.project_dir%')] private string $projectDir,
         #[Autowire('%kernel.environment')] private string  $environment,
-        private MessageBusInterface                        $messageBus,
         private LoggerInterface                            $logger,
         private readonly EntityManagerInterface            $entityManager,
-        private ?TexterInterface                            $texter=null,
-        #[Target(IPlayerWorkflow::WORKFLOW_NAME)] private ?WorkflowInterface $workflow=null,
+        private ?TexterInterface                            $texter = null,
+        #[Target(IPlayerWorkflow::WORKFLOW_NAME)] private ?WorkflowInterface $workflow = null,
         private float                                      $totalTime = 0.0,
-        // crying to be a DTO
         private array                                      $response = [
             'lines' => [],
             'header' => null,
             'markers' => [],
-        ]
+        ],
+        private ?MessageBusInterface                        $messageBus = null,
     )
     {
         $this->converter = new AnsiToHtmlConverter();
