@@ -14,10 +14,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class SurvosCiineBundle extends AbstractBundle
 {
     protected string $extensionAlias = 'survos_ciine';
+
+    public function configureRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->import(dirname(__DIR__) . '/src/Controller/', 'attribute');
+    }
 
     /**
      * @param array<mixed> $config
