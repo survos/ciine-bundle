@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand('ciine:upload', 'upload a Asciinema file or directory to SurvosCiine site', aliases: ['ciine:upload'])]
-class UploadCommand extends Command
+class UploadCommand
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')] private readonly string $projectDir,
@@ -25,7 +25,6 @@ class UploadCommand extends Command
         private ?string $name = null
     )
     {
-        parent::__construct($this->name);
     }
 
     /* move to SurvosUtils? */

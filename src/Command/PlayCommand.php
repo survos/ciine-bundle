@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsCommand('ciine:play', 'play Asciinema file, defaulting to the most recent')]
-class PlayCommand extends Command
+class PlayCommand
 {
     public function __construct(
         #[Autowire('%kernel.project_dir%')] private readonly string $projectDir,
@@ -25,7 +25,6 @@ class PlayCommand extends Command
         private ?string $name = null
     )
     {
-        parent::__construct($this->name);
     }
 
     /* move to SurvosUtils? */
