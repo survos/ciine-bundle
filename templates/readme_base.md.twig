@@ -9,6 +9,16 @@
 
 ## Installation
 
+Install asciinema and configure it for ciine tutorial capture:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/survos/ciine-bundle/main/install-asciinema.sh | bash
+```
+
+The installer places the asciinema binary at `/usr/local/bin/ciine`, enables
+asciinema input capture, and caps recorded idle pauses at `0.2` seconds in
+`~/.config/asciinema/config.toml`.
+
 @todo: make sure .env has
 DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
 

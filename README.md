@@ -4,10 +4,25 @@ Symfony Bundle that provides some utilities for using asciinema 3.0 to create as
  
 # Install asciinema
 
+```bash
+wget -qO- https://raw.githubusercontent.com/survos/ciine-bundle/main/install-asciinema.sh | bash
+```
+
+This installs the asciinema binary as `/usr/local/bin/ciine` and writes
+`~/.config/asciinema/config.toml` with input capture enabled and recorded idle
+pauses capped at `0.2` seconds, which ciine needs for tutorial generation. The
+installer runs as your user and uses `sudo` only for the binary install.
+
+To install it somewhere else:
+
+```bash
+wget -qO- https://raw.githubusercontent.com/survos/ciine-bundle/main/install-asciinema.sh | INSTALL_DIR=~/.local/bin TARGET_NAME=ciine bash
+```
+
 # Install the bundle
 
 ```bash
-wget "https://github.com/asciinema/asciinema/releases/download/v3.2.0/asciinema-x86_64-unknown-linux-gnu" asciinema
+composer require survos/ciine-bundle
 ```
 
 # Configure .bashrc
