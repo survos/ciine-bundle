@@ -22,7 +22,7 @@
         "symfony/workflow": "^8.1",
         "sensiolabs/ansi-to-html": "^2.0",
         "symfony/twig-bridge": "^8.1",
-        "doctrine/orm": "^3.3",
+        "doctrine/orm": "^3.7",
         "doctrine/doctrine-bundle": "^3.0",
         "api-platform/doctrine-orm": "^5.0"
     },
