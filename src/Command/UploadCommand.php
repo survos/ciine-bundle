@@ -32,14 +32,14 @@ final class UploadCommand
             $apiEndpoint = $this->config['endpoint'] ?? getenv('CIINE_ENDPOINT') ?: '';
         }
 
-        if ($apiEndpoint === '') {
+        if ('' === $apiEndpoint) {
             $io->error('Missing upload endpoint. Configure survos_ciine.endpoint, CIINE_ENDPOINT, or pass --server-url.');
 
             return Command::FAILURE;
         }
 
         $path = $this->resolveUploadPath($path);
-        if ($path === null) {
+        if (null === $path) {
             $io->error('No upload path was provided and no cast file could be found.');
 
             return Command::FAILURE;
@@ -52,14 +52,14 @@ final class UploadCommand
         }
 
         if (is_dir($path)) {
-            $zipFilename = rtrim((string) realpath($path), DIRECTORY_SEPARATOR) . '.zip';
+            $zipFilename = rtrim((string) realpath($path), DIRECTORY_SEPARATOR).'.zip';
             $this->zipDirectory($path, $zipFilename);
             $path = $zipFilename;
             $io->note("Zipped directory to $path");
         }
 
         $fileHandle = fopen($path, 'r');
-        if ($fileHandle === false) {
+        if (false === $fileHandle) {
             $io->error("Unable to open $path");
 
             return Command::FAILURE;
@@ -86,7 +86,7 @@ final class UploadCommand
             }
 
             $content = $response->getContent(false);
-            if ($content !== '') {
+            if ('' !== $content) {
                 $io->writeln($content);
 
                 $data = json_decode($content, true);
@@ -118,12 +118,12 @@ final class UploadCommand
 
     private function resolveUploadPath(?string $path): ?string
     {
-        if ($path !== null && $path !== '') {
+        if (null !== $path && '' !== $path) {
             if (file_exists($path)) {
                 return $path;
             }
 
-            $projectPath = $this->projectDir . DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+            $projectPath = $this->projectDir.DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR);
 
             return file_exists($projectPath) ? $projectPath : $path;
         }
@@ -138,7 +138,7 @@ final class UploadCommand
         }
 
         if (!is_dir($castDir)) {
-            $castDir = $this->projectDir . DIRECTORY_SEPARATOR . ltrim($castDir, DIRECTORY_SEPARATOR);
+            $castDir = $this->projectDir.DIRECTORY_SEPARATOR.ltrim($castDir, DIRECTORY_SEPARATOR);
         }
 
         return $this->getMostRecentFile($castDir);
@@ -187,11 +187,11 @@ final class UploadCommand
     private static function formatValue(mixed $value): string
     {
         return match (true) {
-            $value === null => '<fg=gray>null</>',
+            null === $value => '<fg=gray>null</>',
             is_bool($value) => $value ? '<fg=green>true</>' : '<fg=red>false</>',
-            is_array($value) => '<fg=yellow>[' . count($value) . ' items]</>',
-            is_object($value) => '<fg=cyan>' . get_class($value) . '</>',
-            is_string($value) && $value === '' => '<fg=gray>(empty)</>',
+            is_array($value) => '<fg=yellow>['.count($value).' items]</>',
+            is_object($value) => '<fg=cyan>'.get_class($value).'</>',
+            is_string($value) && '' === $value => '<fg=gray>(empty)</>',
             is_string($value) => $value,
             default => (string) $value,
         };
@@ -205,7 +205,7 @@ final class UploadCommand
 
         $zip = new \ZipArchive();
 
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+        if (true !== $zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
             throw new \RuntimeException("Cannot create ZIP file at: $zipFilePath");
         }
 
@@ -214,7 +214,7 @@ final class UploadCommand
 
         foreach ($finder as $file) {
             $realPath = $file->getRealPath();
-            if ($realPath === false) {
+            if (false === $realPath) {
                 continue;
             }
 

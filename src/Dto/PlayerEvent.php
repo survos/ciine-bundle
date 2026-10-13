@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Survos\CiineBundle\Dto;
 
 class PlayerEvent
 {
     public function __construct(
-        private float  $increment,
+        private float $increment,
         private string $type,
         private string $text,
-    )
-    {
-
+    ) {
     }
 
     public function getIncrement(): float
@@ -30,21 +30,23 @@ class PlayerEvent
 
     public function isInput(): bool
     {
-        return $this->type === 'i';
+        return 'i' === $this->type;
     }
+
     public function isOutput(): bool
     {
-        return $this->type === 'o';
+        return 'o' === $this->type;
     }
+
     public function isMarker(): bool
     {
-        return $this->type === 'm';
+        return 'm' === $this->type;
     }
 
     public function endWithAppPrompt(): bool
     {
-        return str_ends_with($this->getText(), '> ') ||
-        str_ends_with($this->getText(), '% ');
+        return str_ends_with($this->getText(), '> ')
+        || str_ends_with($this->getText(), '% ');
     }
 
     public function isReturn(): bool
@@ -56,6 +58,4 @@ class PlayerEvent
     {
         return str_ends_with($this->getText(), '$ ');
     }
-
-
 }

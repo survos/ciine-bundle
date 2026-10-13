@@ -51,8 +51,8 @@ abstract class CastBase implements \Stringable
     #[ORM\Column(nullable: true)]
     public ?float $totalTime = null;
 
-    public ?string $castUrl { get => $this->asciinemaId ? 'https://asciinema.org/a/' . $this->asciinemaId : null; }
-    public ?string $downloadUrl { get => $this->asciinemaId ? 'https://asciinema.org/a/' . $this->asciinemaId . '.cast' : null; }
+    public ?string $castUrl { get => $this->asciinemaId ? 'https://asciinema.org/a/'.$this->asciinemaId : null; }
+    public ?string $downloadUrl { get => $this->asciinemaId ? 'https://asciinema.org/a/'.$this->asciinemaId.'.cast' : null; }
 
     public function getCode(): ?string
     {

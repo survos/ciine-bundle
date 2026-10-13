@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Survos\CiineBundle;
 
 use Survos\CiineBundle\Command\PlayCommand;
@@ -22,12 +24,12 @@ class SurvosCiineBundle extends AbstractBundle
 
     public function configureRoutes(RoutingConfigurator $routes): void
     {
-        $routes->import(dirname(__DIR__) . '/src/Controller/', 'attribute');
+        $routes->import(dirname(__DIR__).'/src/Controller/', 'attribute');
     }
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $entityDir = dirname(__DIR__) . '/src/Entity';
+        $entityDir = dirname(__DIR__).'/src/Entity';
 
         if ($builder->hasExtension('doctrine')) {
             $builder->prependExtensionConfig('doctrine', [
@@ -56,7 +58,7 @@ class SurvosCiineBundle extends AbstractBundle
             ->setAutoconfigured(true)
             ->setPublic(true);
 
-        foreach ([ScreenshotController::class, CastController::class ] as $class) {
+        foreach ([ScreenshotController::class, CastController::class] as $class) {
             $builder->autowire($class)
                 ->setPublic(true)
                 ->setAutowired(true)
@@ -89,7 +91,6 @@ class SurvosCiineBundle extends AbstractBundle
             ->addTag('console.command')
         ;
 
-
         $builder->autowire(PlayCommand::class)
             ->setArgument('$httpClient', new Reference('http_client'))
             ->setArgument('$projectDir', '%kernel.project_dir%')
@@ -97,7 +98,6 @@ class SurvosCiineBundle extends AbstractBundle
 //            ->setArgument('$config', $config)
             ->addTag('console.command')
         ;
-
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -110,6 +110,5 @@ class SurvosCiineBundle extends AbstractBundle
             ->scalarNode('dir')->defaultValue('%env(default::CIINE_LOCAL_DIR)%')->end()
             ->scalarNode('cast_class')->defaultValue('App\\Entity\\Cast')->end()
             ->end();
-        ;
     }
 }

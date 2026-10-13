@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Survos\CiineBundle\Dto;
 
 use Survos\CiineBundle\Workflow\IPlayerWorkflow;
@@ -13,9 +15,7 @@ class Player
         public string $inputString = '',
         public string $outputString = '',
         public string $prompt = '', // the CLI prompt response, e.g. ls
-
     ) {
-
     }
 
     public function setMarking(string $marking): void
@@ -46,20 +46,21 @@ class Player
     public function appendInputString(): string
     {
         $this->inputString .= $this->event->getText();
+
         return $this->inputString;
     }
 
     public function appendPrompt(): string
     {
         $this->prompt .= $this->event->getText();
+
         return $this->prompt;
     }
 
     public function appendOutput(): string
     {
         $this->outputString .= $this->event->getText();
+
         return $this->outputString;
     }
-
-
 }
