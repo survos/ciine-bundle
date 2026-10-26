@@ -59,6 +59,6 @@
         }
     },
     "suggest": {
-        "playwright-php/playwright": "Needed by ciine:screenshot (also run vendor/bin/playwright-install chromium)"
+        "playwright-php/playwright": "Needed by ciine:screenshot; drives your installed Google Chrome (needs Node 20+)"
     }
 }

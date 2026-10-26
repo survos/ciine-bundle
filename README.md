@@ -55,5 +55,6 @@ bin/console ciine:screenshot /admin
 bin/console ciine:copy .env.local
 ```
 
-`ciine:screenshot` uses [playwright-php/playwright](https://github.com/playwright-php/playwright) (Node 20+; run
-`composer require --dev playwright-php/playwright` and `vendor/bin/playwright-install chromium` once).
+`ciine:screenshot` uses [playwright-php/playwright](https://github.com/playwright-php/playwright) to drive your installed
+Google Chrome (Node 20+; `composer require --dev playwright-php/playwright`). Without Chrome, pass `--channel=chromium`
+after `vendor/bin/playwright-install chromium`.
