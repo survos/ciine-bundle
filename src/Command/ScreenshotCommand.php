@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Survos\CiineBundle\Command;
 
+use Playwright\Playwright;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Panther\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsCommand('ciine:screenshot', 'take screenshot')]
@@ -56,17 +56,27 @@ final class ScreenshotCommand
 
         $io->warning($url);
 
-        // Use real Chrome (relative URLs won’t work, so we normalized above)
-        $client = Client::createChromeClient(
-            null,
-            [
-                '--window-size=1500,4000',
-                '--proxy-server=http://127.0.0.1:7080',
-            ]
-        );
+        if (!class_exists(Playwright::class)) {
+            $io->error('Screenshots need playwright-php/playwright: composer require --dev playwright-php/playwright && vendor/bin/playwright-install chromium');
 
-        $client->request('GET', $url);
-        $client->takeScreenshot($screenshotPath);
+            return Command::FAILURE;
+        }
+
+        // Real Chromium (relative URLs don't work in a browser, so they were normalized above). through Playwright. The Symfony local proxy is only needed for .wip hosts (it serves their
+        // local TLS certificate, hence ignoreHTTPSErrors); any other URL goes straight out.
+        $options = ['headless' => true, 'ignoreHTTPSErrors' => true];
+        if (str_ends_with((string) parse_url($url, \PHP_URL_HOST), '.wip')) {
+            $options['proxy'] = ['server' => 'http://127.0.0.1:7080'];
+        }
+        $context = Playwright::chromium($options);
+        try {
+            $page = $context->newPage();
+            $page->setViewportSize(1500, 4000);
+            $page->goto($url);
+            $page->screenshot($screenshotPath);
+        } finally {
+            $context->close();
+        }
 
         $publicUri = str_replace('public/', '', $screenshotPath);
         $io->writeln(sprintf('Saved screenshot: <info>%s</info> %s', $screenshotPath, $url.$publicUri));

@@ -32,7 +32,7 @@
         "symfony/framework-bundle": "^8.1",
         "symfony/routing": "^8.1",
         "survos/state-bundle": "^2.5",
-        "symfony/panther": "^2.2"
+        "playwright-php/playwright": "^1.5"
     },
     "autoload": {
         "psr-4": {
@@ -57,5 +57,8 @@
         "allow-plugins": {
             "endroid/installer": true
         }
+    },
+    "suggest": {
+        "playwright-php/playwright": "Needed by ciine:screenshot (also run vendor/bin/playwright-install chromium)"
     }
 }

@@ -54,3 +54,6 @@ bin/console debug:route easyadmin
 bin/console ciine:screenshot /admin
 bin/console ciine:copy .env.local
 ```
+
+`ciine:screenshot` uses [playwright-php/playwright](https://github.com/playwright-php/playwright) (Node 20+; run
+`composer require --dev playwright-php/playwright` and `vendor/bin/playwright-install chromium` once).
